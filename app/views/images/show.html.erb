@@ -1,7 +1,7 @@
 <h1>showing image</h1>
 
 <% if @image.present? %>
-  <img src=<%= @image.url %>>
+  <%= image_tag(@image.url, class: 'display_image') %>
 <% end %>
 
 <% if flash[:error] %>
