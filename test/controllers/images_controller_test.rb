@@ -43,4 +43,10 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_equal elements[1][:src], image_1.url
     end
   end
+
+  def test_root
+    get root_path
+    assert_response :ok
+    assert_select 'h1', 'Image list'
+  end
 end
