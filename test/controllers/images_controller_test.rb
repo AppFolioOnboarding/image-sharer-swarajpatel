@@ -14,6 +14,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
         image: { url: 'http://webapps-for-beginners.rubymonstas.org/assets/images/erb_1-b7c55b20.png' }
       }
     end
+    assert_redirected_to Image.last
   end
 
   def test_create__failure
@@ -23,5 +24,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
     assert_includes response.body, 'needs to be a valid image URL'
+  end
+
+  def test_show
+    image = Image.create(url: 'http://valid-image.com/1.png')
+    get image_path(image)
+    assert_response :ok
+    assert_select 'img[src="http://valid-image.com/1.png"]', count: 1
   end
 end
