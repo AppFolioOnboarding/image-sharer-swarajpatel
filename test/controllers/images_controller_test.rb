@@ -65,6 +65,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_index_with_tags
+    Image.create!(url: 'http://some-image.com/1.jpg', tag_list: 'tag1, tag2')
+    Image.create!(url: 'http://some-image.com/2.jpg')
+    get images_path
+    assert_response :ok
+    assert_select '.image_tags', 'Tags: tag1, tag2'
+  end
+
   def test_root
     get root_path
     assert_response :ok
