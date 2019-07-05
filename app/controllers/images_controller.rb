@@ -13,6 +13,10 @@ class ImagesController < ApplicationController
     end
   end
 
+  def index
+    @images = Image.all.order('id DESC')
+  end
+
   def show
     @image = Image.find_by(id: params[:id])
     if @image.nil?

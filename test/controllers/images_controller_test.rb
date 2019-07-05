@@ -32,4 +32,15 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
     assert_select 'img[src="http://valid-image.com/1.png"]', count: 1
   end
+
+  def test_index
+    image_1 = Image.create!(url: 'http://some-image.com/1.jpg')
+    image_2 = Image.create!(url: 'http://some-image.com/2.jpg')
+    get images_path
+    assert_response :ok
+    assert_select 'img' do |elements|
+      assert_equal elements[0][:src], image_2.url
+      assert_equal elements[1][:src], image_1.url
+    end
+  end
 end
