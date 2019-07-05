@@ -1,4 +1,5 @@
 <%= simple_form_for @image do |f| %>
     <%= f.input :url %>
+    <%= f.input :tag_list, value: f.object.tag_list.to_s %>
     <%= f.button :submit %>
 <% end %>

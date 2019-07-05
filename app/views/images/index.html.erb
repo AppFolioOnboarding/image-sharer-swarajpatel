@@ -2,5 +2,8 @@
 <% @images.each do |image| %>
   <div>
     <%= image_tag(image.url, class: 'display_image') %>
+    <% if image.tag_list.present? %>
+      <p class="image_tags"> Tags: <%= image.tag_list %> </p>
+    <% end %>
   </div>
 <% end %>
