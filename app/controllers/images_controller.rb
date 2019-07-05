@@ -25,6 +25,6 @@ class ImagesController < ApplicationController
   private
 
   def image_params
-    params[:image].permit(:url)
+    params[:image].permit(:url, :tag_list)
   end
 end

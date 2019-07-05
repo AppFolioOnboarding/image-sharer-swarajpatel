@@ -18,6 +18,19 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to Image.last
   end
 
+  def test_create__success_with_taglist_params
+    tag_list_values = %w[tag1 tag2]
+    assert_difference 'Image.count', 1 do
+      post images_path, params: {
+        image: { url: 'http://webapps-for-beginners.rubymonstas.org/assets/images/erb_1-b7c55b20.png',
+                 tag_list: tag_list_values.join(', ') }
+      }
+    end
+
+    assert_equal Image.last.tag_list, tag_list_values
+    assert_redirected_to Image.last
+  end
+
   def test_create__failure
     assert_no_difference 'Image.count' do
       post images_path, params: { image: { url: 'invalid url' } }
