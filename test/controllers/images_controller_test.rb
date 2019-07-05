@@ -6,6 +6,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
     assert_select '.button', count: 1
+    assert_select '#image_tag_list', count: 1
   end
 
   def test_create__success
