@@ -47,6 +47,13 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'img[src="http://valid-image.com/1.png"]', count: 1
   end
 
+  def test_show_with_taglist
+    image = Image.create(url: 'http://valid-image.com/1.png', tag_list: 'tag1, tag2')
+    get image_path(image)
+    assert_response :ok
+    assert_select '.image_tags', 'Tags: tag1, tag2'
+  end
+
   def test_index
     image1 = Image.create!(url: 'http://some-image.com/1.jpg')
     image2 = Image.create!(url: 'http://some-image.com/2.jpg')
