@@ -19,8 +19,6 @@ class ImagesController < ApplicationController
 
   def show
     @image = Image.find_by(id: params[:id])
-    if @image.nil?
-      flash[:error] = 'Image not found!'
-    end
+    flash[:error] = 'Image not found!' if @image.nil?
   end
 end
