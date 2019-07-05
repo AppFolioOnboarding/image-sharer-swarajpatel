@@ -4,7 +4,7 @@ class ImagesController < ApplicationController
   end
 
   def create
-    @image = Image.new(params[:image].permit(:url))
+    @image = Image.new(image_params)
     if @image.valid?
       @image.save!
       redirect_to @image
@@ -20,5 +20,11 @@ class ImagesController < ApplicationController
   def show
     @image = Image.find_by(id: params[:id])
     flash[:error] = 'Image not found!' if @image.nil?
+  end
+
+  private
+
+  def image_params
+    params[:image].permit(:url)
   end
 end
