@@ -70,7 +70,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     Image.create!(url: 'http://some-image.com/2.jpg')
     get images_path
     assert_response :ok
-    assert_select '.image_tags', 'Tags: tag1, tag2'
+
+    assert_select 'div' do |elements|
+      assert_select elements[0], 'a', count: 0
+      assert_select elements[1], 'a[href=?]', '/images?filter=tag1'
+      assert_select elements[1], 'a[href=?]', '/images?filter=tag2'
+    end
   end
 
   def test_root
