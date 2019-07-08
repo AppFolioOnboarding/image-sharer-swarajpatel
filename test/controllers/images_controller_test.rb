@@ -78,6 +78,15 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_index_with_filter
+    Image.create!(url: 'http://some-image.com/1.jpg', tag_list: 'tag1')
+    Image.create!(url: 'http://some-image.com/2.jpg', tag_list: 'tag2')
+    get images_path(filter: 'tag1')
+    assert_response :ok
+    assert_select 'a[href=?]', '/images?filter=tag1'
+    assert_select 'a[href="/images?filter=tag2"]', count: 0
+  end
+
   def test_root
     get root_path
     assert_response :ok
