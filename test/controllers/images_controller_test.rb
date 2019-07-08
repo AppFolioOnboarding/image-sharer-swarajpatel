@@ -42,14 +42,18 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_show
     image = Image.create(url: 'http://valid-image.com/1.png')
+
     get image_path(image)
+
     assert_response :ok
     assert_select 'img[src="http://valid-image.com/1.png"]', count: 1
   end
 
   def test_show_with_taglist
     image = Image.create(url: 'http://valid-image.com/1.png', tag_list: 'tag1, tag2')
+
     get image_path(image)
+
     assert_response :ok
     assert_select '.image_tags', 'Tags: tag1, tag2'
   end
@@ -57,7 +61,9 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_index
     image1 = Image.create!(url: 'http://some-image.com/1.jpg')
     image2 = Image.create!(url: 'http://some-image.com/2.jpg')
+
     get images_path
+
     assert_response :ok
     assert_select 'img' do |elements|
       assert_equal elements[0][:src], image2.url
@@ -68,9 +74,26 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_index_with_tags
     Image.create!(url: 'http://some-image.com/1.jpg', tag_list: 'tag1, tag2')
     Image.create!(url: 'http://some-image.com/2.jpg')
+
     get images_path
+
     assert_response :ok
-    assert_select '.image_tags', 'Tags: tag1, tag2'
+    assert_select 'div' do |elements|
+      assert_select elements[0], 'a', count: 0
+      assert_select elements[1], 'a[href=?]', '/images?filter=tag1'
+      assert_select elements[1], 'a[href=?]', '/images?filter=tag2'
+    end
+  end
+
+  def test_index_with_filter
+    Image.create!(url: 'http://some-image.com/1.jpg', tag_list: 'tag1')
+    Image.create!(url: 'http://some-image.com/2.jpg', tag_list: 'tag2')
+
+    get images_path(filter: 'tag1')
+
+    assert_response :ok
+    assert_select 'a[href=?]', '/images?filter=tag1'
+    assert_select 'a[href="/images?filter=tag2"]', count: 0
   end
 
   def test_root

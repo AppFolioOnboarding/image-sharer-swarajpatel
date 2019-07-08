@@ -15,6 +15,8 @@ class ImagesController < ApplicationController
 
   def index
     @images = Image.all.order('id DESC')
+
+    @images = Image.tagged_with(params[:filter]).order('id DESC') if params[:filter].present?
   end
 
   def show
