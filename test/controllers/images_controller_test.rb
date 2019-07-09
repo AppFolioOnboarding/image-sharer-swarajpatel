@@ -96,6 +96,23 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href="/images?filter=tag2"]', count: 0
   end
 
+  def test_destroy__success
+    image = Image.create!(url: 'http://some-image.com/1.jpg')
+
+    assert_difference 'Image.count', -1 do
+      delete image_path(image.id)
+    end
+    assert_redirected_to images_path
+  end
+
+  def test_destroy__failure
+    assert_difference 'Image.count', 0 do
+      delete image_path(-1)
+    end
+    assert_redirected_to images_path
+    assert_equal 'Image not found for deleting', flash[:error]
+  end
+
   def test_root
     get root_path
     assert_response :ok

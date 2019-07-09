@@ -5,6 +5,8 @@
     <% if @image.tag_list.present? %>
         <p class="image_tags"> Tags: <%= @image.tag_list %></p>
     <% end %>
+    <%= link_to 'Delete Image', image_path(@image), method: :delete, data: { confirm: 'Do you want to delete this image?' } %>
+
 <% end %>
 
 <% if flash[:error] %>
