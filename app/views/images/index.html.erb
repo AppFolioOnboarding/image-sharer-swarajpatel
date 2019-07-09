@@ -1,4 +1,7 @@
 <h1>Image list</h1>
+<% if flash[:error] %>
+  <div class="error"><%= flash[:error] %></div>
+<% end %>
 <% @images.each do |image| %>
   <div>
     <%= image_tag(image.url, class: 'display_image') %>

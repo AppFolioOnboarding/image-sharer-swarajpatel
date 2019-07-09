@@ -24,6 +24,13 @@ class ImagesController < ApplicationController
     flash[:error] = 'Image not found!' if @image.nil?
   end
 
+  def destroy
+    image = Image.find_by(id: params[:id])
+    image&.destroy
+    flash[:error] = 'Image not found for deleting' if image.nil?
+    redirect_to images_path
+  end
+
   private
 
   def image_params
