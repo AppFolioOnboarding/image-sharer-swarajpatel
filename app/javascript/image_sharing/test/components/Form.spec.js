@@ -27,4 +27,20 @@ describe('<Form />', () => {
     assert.strictEqual(fields.at(1).text(), '');
     assert.strictEqual(fields.at(2).prop('value'), 'Submit');
   });
+
+  it('should capture name corrrectly onChange', () => {
+    const wrapper = shallow(<Form />);
+    const input = wrapper.find('input').at(0);
+    const event = { target: { value: 'test input' } };
+    input.simulate('change', event);
+    assert.strictEqual(wrapper.state().name, 'test input');
+  });
+
+  it('should capture comment correctly onChange', () => {
+    const wrapper = shallow(<Form />);
+    const input = wrapper.find('input').at(1);
+    const event = { target: { value: 'test input' } };
+    input.simulate('change', event);
+    assert.strictEqual(wrapper.state().comment, 'test input');
+  });
 });
