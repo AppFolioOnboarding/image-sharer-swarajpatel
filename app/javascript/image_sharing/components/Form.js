@@ -1,4 +1,5 @@
 import React from 'react';
+import { post } from '../utils/helper';
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -17,6 +18,16 @@ export default class Form extends React.Component {
       comment: e.target.value
     });
   };
+
+  formSubmitHandler() {
+    return post('/api/feedbacks', this.state).then((response) => {
+      this.setState({ message: response.message });
+    }).catch((response) => {
+      this.setState({ message: response.data.error });
+    }).finally(() => {
+      this.setState({ name: '', comment: '' });
+    });
+  }
 
   render() {
     return (
@@ -53,7 +64,11 @@ export default class Form extends React.Component {
           </label>
         </div>
 
-        <input type="submit" value="Submit" />
+        <input
+          type="submit"
+          value="Submit"
+          onClick={() => this.formSubmitHandler()}
+        />
       </form>
     );
   }
